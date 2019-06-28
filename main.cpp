@@ -67,7 +67,7 @@ int main ( )
         std::cin >> endloop;
     }
     return 0 ;  /// Free memory!
-    }
+}
 
 
 

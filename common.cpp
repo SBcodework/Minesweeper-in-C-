@@ -12,44 +12,19 @@
 #include <time.h>
 #include <cmath>
 
-int extractTwoDigitInt( std::string input )
-{
-    int result = 0;
-    int length = input.length();
-    if ( length == 0 )
-    {
-        return -1;
-    }
-    char firstDigit = input[0];
-    if ( !isdigit(firstDigit) )
-    {
-        return -1;
-    }
-    result += ((int)(firstDigit-'0')) * 10;
-    if ( length > 1 && isdigit(input[1]) )
-    {
-        result += ((int)((input[1])-'0'));
-    }
-
-    if ( result < 0 || result > 99 )
-    {
-        return -1;
-    }
-    return result;
-}
 
 int extractDigitInt( int digits, std::string input )
 {
     int result = 0;
     int length = input.length();
-    if ( length == 0 || digits < 0 || digits > length )
+    if ( length == 0 || digits < 0 )
     {
         return -1;
     }
     /// Find the furthest index of the string representing the smallest digit (under 10) as string length permits.
     int digitsFirstGuess = digits; //(length > digits) ? length : digits;
     int digitsSecondGuess = 0;  /// Below: find the first digit.
-    for ( int i = 0; i < digitsFirstGuess || isdigit(input[i]); i++ )
+    for ( int i = 0; (i < digitsFirstGuess) && (isdigit(input[i])) && (i < length); i++ )
     {
         digitsSecondGuess++;
     }
@@ -59,10 +34,10 @@ int extractDigitInt( int digits, std::string input )
     }
 
     //float digit = digitsSecondGuess;
-    for ( int i = (digitsSecondGuess - 1), magnitude = 0, inputDigit = 0; i >= 0; i--/*, digit--*/ )  /// Start backwards from the furthest index
+    for ( int i = (digitsSecondGuess - 1), magnitude = 0, inputDigit = 0, power = 0; i >= 0; i--, power++ )  /// Start backwards from the furthest index
     {
         inputDigit = (int)(input[i] - '0');
-        magnitude  = (int)(std::pow(10.0, (float)i));
+        magnitude  = (int)(std::pow(10.0, (float)power));
         result += (inputDigit * magnitude);
     }
 
@@ -83,8 +58,6 @@ void askXYMinesLoop(Parameter& out_param)
         std::cin >> stry;
         std::cout << "Number of mines? ";
         std::cin >> strMines;
-        //x = extractTwoDigitInt(strx);
-        //y = extractTwoDigitInt(stry);
         x = extractDigitInt(2, strx);
         y = extractDigitInt(2, stry);
         mines = extractDigitInt(4, strMines);  //4 digits
@@ -176,68 +149,46 @@ int askStartXYLoop(Parameter& out_param)
 
 int h_extractCoords(std::string in_line, int& out_x, int& out_y, char* out_sep, char sep)
 {
-    int x = 0, y = 0, length = 0; // Output types
-    char chr = 'a'; // If we run this through the function returns 2 (user error)
-    length = in_line.length() > 4 ? 5 : in_line.length();
+    int length   = in_line.length();
 
-    for(int i = 0, start = 1, * current = &x; i<length; i++) //Traverse the line.
+    if ( (length < 3) || (length > 5) )
     {
-        chr = in_line[i];
-        if ( (chr == ' ' && chr != sep && sep != NULL) || chr == '\n' || chr == '\0') // At end of line:
-        {
-            if (!start) // If the user's input for y is one digit:
-            {
-                y /= 10; // One digit input is multiplied by ten, so undo it.
-            }
-            break;
-        }
-        if ( (sep == NULL && !((int(chr) > 47) && (int(chr) < 58))) || chr == sep) // If a comma is found:
-        {
-            if (sep == NULL)
-            {
-                sep = chr;
-                if ( out_sep != nullptr )
-                {
-                    *out_sep = sep;
-                }
-            }
-            if (!start) // If x is one digit:
-            {
-                x /= 10;
-                start = 1; // Reset "start" so "y" can use it.
-            }
-            current = &y; // Variable swap
-            continue;
-        }
-        if (! ( (int(chr) > 47) && (int(chr) < 58 ) ) ) // Checking invalid input, using asci values for numbers
-        {
-            return 2; // User error
-        }
-        if (start) // If on the start of a coordinate:
-        {
-            *current += (chr-'0') * 10; // Multiply it by ten. REMEMBER: it's a pointer!
-            start = 0; // If 0, we only have one digit.
-            continue;
-        }
-        *current += chr-'0'; // We should have two digits. Add the final digit.
-        start = 1;
+        return 2;  // Too long or too short; for legacy reasons 2 is the error code for user errors
     }
-    if ( ( typeid(int) == typeid(x) ) && ( typeid(int) == typeid(y) ) &&  (x>=0) && (x<100) && (y>=0) && (y<100) )
-        {
-            out_x = x;
-            out_y = y;
-            return 0; // No error
-        }
-    std::cout << "Error in h_extractCoords!\n";
-    std::cout << "in_line: " << in_line << "\n";
-    std::cout << "sep: " << sep << "\n";
-    std::cout << "x, y: " << x << " " << y << "\n";
-    std::cout << "Coordcheck: " << (typeid(int) == typeid(x)) << (typeid(int) == typeid(y)) << (x>=0) << (x<100) << (y>=0) << (y<100) << "\n";
-    return 1; // Error
+
+    int x = extractDigitInt( 2, in_line );
+    int slicedStart = (x < 10) ? 2 : 3;
+
+    if ( (x == -1) || (slicedStart > length) )
+    {
+        return 2;  // Invalid X or string is too short for a separator to fit
+    }
+
+    char separator = in_line[slicedStart - 1];
+
+    if ( ( (separator != sep) && sep != NULL ) || ( (sep == NULL) && isdigit(separator) ) )
+    {
+        return 2;  // An invalid separator is found when it is defined in the arguments, or if the separator is a digit when searching for one.
+    }
+
+    std::string slicedString = in_line.substr( slicedStart, length );
+    int y = extractDigitInt( 2, slicedString );
+
+    if ( y == -1 )
+    {
+        return 2;  // Invalid y
+    }
+
+    if ( out_sep != nullptr )
+    {
+        *out_sep = separator;
+    }
+
+    out_x = x;
+    out_y = y;
+
+    return 0;
 }
-
-/// Above is clean
-
 
 void gengrid(Gridtype& out_grid)
 {   // Parameters are declared below
@@ -491,41 +442,37 @@ void askSelectionXYTLoop( Cordtype& out_cord )
     // Find the seperator, then run h_extractcords
     std::string line = "\0" ;
     int x = 0, y = 0 ;
-    char sep = '\0'  ;
+    char sep = '1';
 
-    //for (int length = 0, sepPos = 0, endPos = 0;;)
-    //{
-    for (int error = 1;;)
+
+    for (int error = 1, loopError = 1; loopError ;)
     {
         std::cout << "\nSelect a point and an action. 's' to uncover, 'm' to middle click, and 'f' to flag. Like '13f7'. \n";
         std::cin >> line;
-        //length = line.length();
 
-        //sepPos = (!isdigit(line[1])) ? ( !isdigit(line[2]) ? 0 : 2 ) : 1;
-        //endPos = (sepPos == 1) ? 2 : 3;
-        //break;
-    //}
         error = h_extractCoords( line, x, y, &sep ) ;
-        if ( error )
+        if ( error || (x < 0) || (y < 0) || (x > (out_cord.pParams->length)) || (y > (out_cord.pParams->height) ) )
         {
             std::cout << "Invalid input! Try again.\n";
             continue;
         }
-        break;
+
+        switch (sep)
+        {
+        case 's':
+
+        case 'm':
+
+        case 'f':
+            loopError = 0;
+            break;
+        default:
+            std::cout << "AskXYT Error, sep is invalid! Sep: " << sep << ". Try again.\n";
+        }
     }
-    switch (sep)
-    {
-    case 's':
-        break     ;
-    case 'm':
-        break     ;
-    case 'f':
-        break     ;
-    default:
-        std::cout << "AskXYT Error, sep is invalid! Sep: " << sep << '\n';
-        break;
-    }
+
     out_cord.setter(x, y, sep) ;
+
     return ;
 }
 

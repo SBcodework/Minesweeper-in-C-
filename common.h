@@ -4,13 +4,8 @@
 #include "Gridtype.h"
 #include <vector>
 
-
-
-
 //typedef std::__cxx11::string str;
 typedef std::string str;
-
-int extractTwoDigitInt( std::string input );
 
 int extractDigitInt( int digits, std::string input );
 
@@ -22,20 +17,17 @@ int askStartXYLoop(Parameter& out_param);  // Gets a valid inquiry into the star
 
 int h_extractCoords(std::string in_line, int& out_x, int& out_y, char* out_sep = nullptr, char sep = NULL );     // Helper function to extract coords from a string like "31#5", where '#' is the separator.
                                                                           // Returns 1 if error, 0 if not.
-                                                                          /// If sep is null, the function scans for a separator.
-
-/// Above is clean
+                                                                          /// If sep is null, the function scans for a separator. Outsep, when not a nullptr,
+                                                                          /// outputs the non-digit separator that is found.
 
 void gengrid(Gridtype& out_grid);   // Generates a grid using a  Gridtype object, which is the output. Parameter modifying: ?
                                                       // The MAX SIZE of a grid in either x or y dimension shall be 99 (two digits) in each.
-
 
 void getSquare(int centerX, int centerY, int w, int h, int out_square[9]);  // Fills out_square with valid indexes of a center point. If a point is invalid, it is set
                                                                             // to -1.
 
 int toIndexCheck(int x, int y, int w, int h);  // Checks if the point is out of bounds. If so, it returns -1. Else, it converts the arguments to the index.
                                               // Example input/output:
-
 
 int outOfBounds(int x, int y, int w, int h);  // Out-of-bounds X and Y checking.
                                              /// Remember: Stick to X and Y indexing when using this. If not, there is a risk of
@@ -56,7 +48,6 @@ int outOfBounds(int x, int y, int w, int h);  // Out-of-bounds X and Y checking.
 int uniqueRand(int size, int start, int numlimit, int* output); /// Returns to output[size] an array of unique ints of size "size".
                                                                 /// Start is inclusive, numlimit is exclusive.
 
-
 int allCheck(int start, int in_middle, int in_end, std::vector<bool>& in_vector);
 
 //void disp(Gridtype in_grid);   //UNEEDED Displays the grid. A Parameter object is not needed because it can be obtained by the grid.
@@ -66,8 +57,6 @@ void askSelectionXYTLoop(Cordtype& out_cord);    // Gets a valid inquiry into th
 
 //int endGame(Gridtype in_grid, Cordtype in_cord);    // Enters procedures to end the game. Asks the player if they want to play a new game,
                                // outputs 1 if so, 0 otherwise.
-
-
 
 #endif // COMMON_H_INCLUDED
 // Grid: param reference, .raw

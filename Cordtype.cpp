@@ -17,12 +17,12 @@ Cordtype::~Cordtype()
 
 Parameter* Cordtype::pParams = nullptr; /// Remember: "static" can not be here.
 
-void Cordtype::setter(int in_x, int in_y, int in_mode)
+void Cordtype::setter(int in_x, int in_y, char in_mode)
 {
     x = in_x;
     y = in_y;
     index = (in_y*(pParams->length)) + in_x;
-    if (in_mode == -1)
+    if (in_mode == '\0')
     {
         return;
     }
@@ -40,7 +40,7 @@ int Cordtype::setter(int in_index, int in_mode)
     }
     x = in_index % (pParams->length);
     y = in_index % (pParams->height);
-    if (in_mode == -1)
+    if (in_mode == '\0')
     {
         return 0;
     }
@@ -74,7 +74,7 @@ int Cordtype::get_index()
     return index;
 }
 
-int Cordtype::get_mode()
+char Cordtype::get_mode()
 {
     return mode;
 }
