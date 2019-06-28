@@ -12,6 +12,31 @@
 #include <time.h>
 #include <cmath>
 
+int extractTwoDigitInt( std::string input )
+{
+    int result = 0;
+    int length = input.length();
+    if ( length == 0 )
+    {
+        return -1;
+    }
+    char firstDigit = input[0];
+    if ( !isdigit(firstDigit) )
+    {
+        return -1;
+    }
+    result += ((int)(firstDigit-'0')) * 10;
+    if ( length > 1 && isdigit(input[1]) )
+    {
+        result += ((int)((input[1])-'0'));
+    }
+
+    if ( result < 0 || result > 99 )
+    {
+        return -1;
+    }
+    return result;
+}
 
 int extractDigitInt( int digits, std::string input )
 {
@@ -58,6 +83,8 @@ void askXYMinesLoop(Parameter& out_param)
         std::cin >> stry;
         std::cout << "Number of mines? ";
         std::cin >> strMines;
+        //x = extractTwoDigitInt(strx);
+        //y = extractTwoDigitInt(stry);
         x = extractDigitInt(2, strx);
         y = extractDigitInt(2, stry);
         mines = extractDigitInt(4, strMines);  //4 digits
