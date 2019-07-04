@@ -152,9 +152,9 @@ int Gridtype::action( Cordtype& point )
 
 int Gridtype::action( int index, char mode )
 {
-    char state = raw[index] ;  /// Db: once was int state
-    int gameOver = 0 ;
-    std::cout << "\n";
+    char DBstate = raw[index] ;  /// Db: once was int state
+    int gameOver = 0  ;
+    std::cout << "\n" ;
     switch( mode )
     {
     case 's':

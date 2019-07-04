@@ -80,7 +80,7 @@ int main ( )
         grid.free ( ) ;
         selection.free_static( ) ;
 
-        std::cout << "Continue? 1 if so, 0 otherwise. ";
+        std::cout << "\nContinue? 1 if so, 0 otherwise. ";
         std::cin >> endloop;
     }
     return 0 ;  /// Free memory!
