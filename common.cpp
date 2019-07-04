@@ -194,7 +194,7 @@ int h_extractCoords(std::string in_line, int& out_x, int& out_y, char* out_sep, 
 
     char separator = in_line[slicedStart - 1];
 
-    if ( ( (separator != sep) && sep != NULL ) || ( (sep == NULL) && isdigit(separator) ) )
+    if ( ( (separator != sep) && sep != '\0' ) || ( (sep == '\0') && isdigit(separator) ) )
     {
         return 2;  // An invalid separator is found when it is defined in the arguments, or if the separator is a digit when searching for one.
     }
@@ -278,10 +278,10 @@ void gengrid(Gridtype& out_grid)
         }
     }
 
-    for (int i = 0, square[9] {0}, currentMine; i < mines; i++)
+    for (int i = 0, square[9] {0}, currentMine; i < mines; i++)  // Count numbers and put them in
     {
         currentMine = mineList[i];
-        getSquare(currentMine % 10, currentMine / 10, w, h, square); ///Watch in case of bug
+        getSquare(currentMine % w, currentMine / w, w, h, square); ///Watch in case of bug
         for (int n = 0, state = 0; n < 9; n++)
         {
             state = square[n];
@@ -459,7 +459,8 @@ int allCheck(int start, int middle, int end, std::vector<bool>& in_vector)
             std::cout << "\n";
             return 3; // Both have ones
     }
-    /// The compiler may flag a warning here on reaching end of non-void function
+    std::cout << "Error in allCheck(...)!\n";  // Shouldn't reach here, added to avoid compiler warning
+    return 0;
 }
 
 void askSelectionXYTLoop( Cordtype& out_cord )

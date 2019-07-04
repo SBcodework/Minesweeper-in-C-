@@ -43,7 +43,7 @@ void dispEmpty(Parameter& in_param);   // Displays an empty grid.
 
 int askStartXYLoop(Parameter& out_param);  // Gets a valid inquiry into the start coordinates. Outputs to Parameter object.
 
-int h_extractCoords(std::string in_line, int& out_x, int& out_y, char* out_sep = nullptr, char sep = NULL );     // Helper function to extract coords from a string like "31#5", where '#' is the separator.
+int h_extractCoords(std::string in_line, int& out_x, int& out_y, char* out_sep = nullptr, char sep = '\0' );     // Helper function to extract coords from a string like "31#5", where '#' is the separator.
                                                                           // Returns 1 if error, 0 if not.
                                                                           /// If sep is null, the function scans for a separator. Outsep, when not a nullptr,
                                                                           /// outputs the non-digit separator that is found.
