@@ -28,25 +28,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifndef COMMON_H_INCLUDED
 #define COMMON_H_INCLUDED
-#include "Parameter.h"
-#include "Gridtype.h"
+
 #include <vector>
-
-//typedef std::__cxx11::string str;
-typedef std::string str;
-
-int extractDigitInt( int digits, std::string input );
-
-void askXYMinesLoop(Parameter& out_param);  // Gets a valid inquiry into the length, width, and mines. Outputs to Parameter object.
-
-void dispEmpty(Parameter& in_param);   // Displays an empty grid.
-
-int askStartXYLoop(Parameter& out_param);  // Gets a valid inquiry into the start coordinates. Outputs to Parameter object.
-
-int h_extractCoords(std::string in_line, int& out_x, int& out_y, char* out_sep = nullptr, char sep = '\0' );     // Helper function to extract coords from a string like "31#5", where '#' is the separator.
-                                                                          // Returns 1 if error, 0 if not.
-                                                                          /// If sep is null, the function scans for a separator. Outsep, when not a nullptr,
-                                                                          /// outputs the non-digit separator that is found.
+#include "Gridtype.h"
+#include "Parameter.h"
 
 void gengrid(Gridtype& out_grid);   // Generates a grid using a  Gridtype object, which is the output. Parameter modifying: ?
                                                       // The MAX SIZE of a grid in either x or y dimension shall be 99 (two digits) in each.
@@ -78,13 +63,5 @@ int uniqueRand(int size, int start, int numlimit, int* output); /// Returns to o
 
 int allCheck(int start, int in_middle, int in_end, std::vector<bool>& in_vector);
 
-//void disp(Gridtype in_grid);   //UNEEDED Displays the grid. A Parameter object is not needed because it can be obtained by the grid.
-
-void askSelectionXYTLoop(Cordtype& out_cord);    // Gets a valid inquiry into the X cord, Y cord, and the type of action.
-                                           // Outputs to Cordtype, including the type of action. The grid is used for verification.
-
-//int endGame(Gridtype in_grid, Cordtype in_cord);    // Enters procedures to end the game. Asks the player if they want to play a new game,
-                               // outputs 1 if so, 0 otherwise.
 
 #endif // COMMON_H_INCLUDED
-// Grid: param reference, .raw

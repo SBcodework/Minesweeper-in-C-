@@ -28,6 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifndef GRIDTYPE_H
 #define GRIDTYPE_H
+
 #include <vector>
 #include "Cordtype.h"
 #include "Parameter.h"

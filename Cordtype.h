@@ -29,6 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef CORDTYPE_H
 #define CORDTYPE_H
 #include "Cordtype.h"
+#include "Parameter.h"
 
 class Cordtype
 {

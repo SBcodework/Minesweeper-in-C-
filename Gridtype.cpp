@@ -32,6 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Parameter.h"
 #include "Gridtype.h"
 #include "Cordtype.h"
+#include "consoleCommon.h"
 
 namespace VARS
 {

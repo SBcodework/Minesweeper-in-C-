@@ -37,14 +37,14 @@ class Parameter
         Parameter();
         virtual ~Parameter();
 
-        int length=0;
-        int height=0;
-        int mines=0;
-        int xStart=0;
-        int yStart=0;
+        int length = 0;
+        int height = 0;
+        int mines  = 0;
+        int xStart = 0;
+        int yStart = 0;
 
-        int area=0;
-        int iStart=0;
+        int area   = 0;
+        int iStart = 0;
 
         void init_dimensions(); /// Call this once length and height are set.
         void init_start(); /// Call this once start coordinates are set.
